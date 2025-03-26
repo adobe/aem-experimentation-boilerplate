@@ -11,6 +11,7 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  sampleRUM,
 } from './aem.js';
 
 const experimentationConfig = {
