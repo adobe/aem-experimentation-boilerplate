@@ -141,6 +141,7 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
   window.hlx.plugins.run('loadLazy');
+  import('../tools/sidekick/aem-experimentation.js');
 }
 
 /**
