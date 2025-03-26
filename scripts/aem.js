@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /*
  * Copyright 2025 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -74,40 +75,6 @@ export function sampleRUM(checkpoint, data = {}) {
   } catch (error) {
     // something went wrong
   }
-}
-
-/**
- * Setup block utils.
- */
-export function setup() {
-  window.hlx = window.hlx || {};
-  window.hlx.RUM_MASK_URL = 'full';
-  window.hlx.RUM_MANUAL_ENHANCE = true;
-  window.hlx.codeBasePath = '';
-  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
-  window.hlx.patchBlockConfig = [];
-  window.hlx.plugins = new PluginsRegistry();
-  window.hlx.templates = new TemplatesRegistry();
-
-  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
-  if (scriptEl) {
-    try {
-      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }
-}
-
-/**
- * Auto initialization.
- */
-
-function init() {
-  setup();
-  sampleRUM.collectBaseURL = window.origin;
-  sampleRUM();
 }
 
 /**
@@ -572,7 +539,6 @@ export async function loadModule(name, jsPath, cssPath, ...args) {
     .then(([, api]) => api);
 }
 
-
 /**
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
@@ -698,7 +664,6 @@ export async function loadSections(element) {
 // Define an execution context for plugins
 export const executionContext = {
   createOptimizedPicture,
-  getAllMetadata,
   getMetadata,
   decorateBlock,
   decorateButtons,
@@ -725,7 +690,6 @@ function parsePluginParams(id, config) {
   return { id: pluginId, config: pluginConfig };
 }
 
- /* eslint-disable max-classes-per-file */
 class PluginsRegistry {
   #plugins;
 
@@ -810,6 +774,39 @@ class TemplatesRegistry {
   // eslint-disable-next-line class-methods-use-this
   includes(id) { return window.hlx.plugins.includes(id); }
 }
- /* eslint-disable max-classes-per-file */
+
+/**
+ * Setup block utils.
+ */
+export function setup() {
+  window.hlx = window.hlx || {};
+  window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.RUM_MANUAL_ENHANCE = true;
+  window.hlx.codeBasePath = '';
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.patchBlockConfig = [];
+  window.hlx.plugins = new PluginsRegistry();
+  window.hlx.templates = new TemplatesRegistry();
+
+  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
+  if (scriptEl) {
+    try {
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }
+}
+
+/**
+ * Auto initialization.
+ */
+
+function init() {
+  setup();
+  sampleRUM.collectBaseURL = window.origin;
+  sampleRUM();
+}
 
 init();
