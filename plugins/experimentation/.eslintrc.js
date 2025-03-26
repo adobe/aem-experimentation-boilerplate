@@ -24,8 +24,8 @@ module.exports = {
         'monocart-coverage-reports',
         './lib-franklin.js',
         './cookie-consent/lib-cookie-consent.js',
-        './analytics/lib-analytics.js'
-      ]
+        './analytics/lib-analytics.js',
+      ],
     }],
   },
 };
