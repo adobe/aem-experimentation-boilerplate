@@ -976,6 +976,24 @@ export async function loadLazy(document, options = {}) {
   if (!isDebugEnabled) {
     return;
   }
+
+  // Add event listener for experimentation config requests
+  window.addEventListener('message', (event) => {
+    if (event.data?.type === 'hlx:experimentation-get-config') {
+      try {
+        const safeClone = JSON.parse(JSON.stringify(window.hlx));
+        
+        event.source.postMessage({
+          type: 'hlx:experimentation-config',
+          config: safeClone,
+          source: 'index-js'
+        }, '*');
+      } catch (e) {
+        console.error('Error sending hlx config:', e);
+      }
+    }
+  });
+
   // eslint-disable-next-line import/no-unresolved
   const preview = await import('https://opensource.adobe.com/aem-experimentation/preview.js');
   const context = {
