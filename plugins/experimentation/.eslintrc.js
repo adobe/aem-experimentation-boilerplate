@@ -17,5 +17,15 @@ module.exports = {
     'import/extensions': ['error', {
       js: 'always',
     }],
+    // allow importing from these modules
+    'import/no-unresolved': ['error', {
+      ignore: [
+        '@playwright/test',
+        'monocart-coverage-reports',
+        './lib-franklin.js',
+        './cookie-consent/lib-cookie-consent.js',
+        './analytics/lib-analytics.js'
+      ]
+    }],
   },
 };
