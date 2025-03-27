@@ -982,11 +982,10 @@ export async function loadLazy(document, options = {}) {
     if (event.data?.type === 'hlx:experimentation-get-config') {
       try {
         const safeClone = JSON.parse(JSON.stringify(window.hlx));
-        
         event.source.postMessage({
           type: 'hlx:experimentation-config',
           config: safeClone,
-          source: 'index-js'
+          source: 'index-js',
         }, '*');
       } catch (e) {
         console.error('Error sending hlx config:', e);
