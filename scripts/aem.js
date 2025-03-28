@@ -759,19 +759,15 @@ class PluginsRegistry {
   // actual API they expose
   async load(phase) {
     [...this.#plugins.entries()]
-      .filter(
-        ([, plugin]) => plugin.condition
-          && !plugin.condition(document, plugin.options, executionContext),
-      )
+      .filter(([, plugin]) => plugin.condition
+      && !plugin.condition(document, plugin.options, executionContext))
       .map(([id]) => this.#plugins.delete(id));
-    return Promise.all(
-      [...this.#plugins.entries()]
-        // Filter plugins that don't match the execution conditions
-        .filter(
-          ([, plugin]) => (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
-              && phase === plugin.load
-              && plugin.url,
-        )
+    return Promise.all([...this.#plugins.entries()]
+      // Filter plugins that don't match the execution conditions
+      .filter(([, plugin]) => (
+        (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
+        && phase === plugin.load && plugin.url
+      ))
         .map(async ([key, plugin]) => {
           try {
             // If the plugin has a default export, it will be executed immediately
@@ -817,25 +813,18 @@ class TemplatesRegistry {
       id.forEach((i) => window.hlx.templates.add(i));
       return;
     }
-    const { id: templateId, config: templateConfig } = parsePluginParams(
-      id,
-      url
-    );
-    templateConfig.condition = () => toClassName(getMetadata("template")) === templateId;
+    const { id: templateId, config: templateConfig } = parsePluginParams(id, url);
+    templateConfig.condition = () => toClassName(getMetadata('template')) === templateId;
     window.hlx.plugins.add(templateId, templateConfig);
   }
 
   // Get the template
   // eslint-disable-next-line class-methods-use-this
-  get(id) {
-    return window.hlx.plugins.get(id);
-  }
+  get(id) { return window.hlx.plugins.get(id); }
 
   // Check if the template exists
   // eslint-disable-next-line class-methods-use-this
-  includes(id) {
-    return window.hlx.plugins.includes(id);
-  }
+  includes(id) { return window.hlx.plugins.includes(id); }
 }
 
 /**
@@ -846,8 +835,7 @@ function setup() {
   window.hlx.RUM_MASK_URL = 'full';
   window.hlx.RUM_MANUAL_ENHANCE = true;
   window.hlx.codeBasePath = '';
-  window.hlx.lighthouse =
-    new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.patchBlockConfig = [];
   window.hlx.plugins = new PluginsRegistry();
   window.hlx.templates = new TemplatesRegistry();
@@ -855,9 +843,7 @@ function setup() {
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
-      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split(
-        '/scripts/scripts.js',
-      );
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
