@@ -768,25 +768,21 @@ class PluginsRegistry {
       [...this.#plugins.entries()]
         // Filter plugins that don't match the execution conditions
         .filter(
-          ([, plugin]) =>
-            (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
+          ([, plugin]) => (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
               && phase === plugin.load
-              && plugin.url
+              && plugin.url,
         )
         .map(async ([key, plugin]) => {
           try {
             // If the plugin has a default export, it will be executed immediately
-            const pluginApi =
-              (await loadModule(
-                key,
-                !plugin.url.endsWith('.js')
-                  ? `${plugin.url}/${key}.js`
-                  : plugin.url,
-                !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
-                document,
-                plugin.options,
-                executionContext
-              )) || {};
+            const pluginApi = (await loadModule(
+              key,
+              !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+              !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+              document,
+              plugin.options,
+              executionContext,
+            )) || {};
             this.#plugins.set(key, { ...plugin, ...pluginApi });
           } catch (err) {
             // eslint-disable-next-line no-console
@@ -841,7 +837,6 @@ class TemplatesRegistry {
     return window.hlx.plugins.includes(id);
   }
 }
-
 
 /**
  * Setup block utils.
