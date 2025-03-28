@@ -784,9 +784,9 @@ class PluginsRegistry {
           // eslint-disable-next-line no-console
           console.error('Could not load specified plugin', key);
         }
-      }),
-    );
+      }));
   }
+ 
   // Run a specific phase in the plugin
   async run(phase) {
     return [...this.#plugins.values()]
