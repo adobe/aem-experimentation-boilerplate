@@ -254,7 +254,7 @@ export function createOptimizedPicture(
       picture.appendChild(img);
       img.setAttribute(
         'src',
-        `${pathname}?width=${br.width}&format=${ext}&optimize=medium`
+        `${pathname}?width=${br.width}&format=${ext}&optimize=medium`,
       );
     }
   });
@@ -333,7 +333,7 @@ export function decorateButtons(element) {
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector('img')) {
         if (
-          up.childNodes.length === 1 
+          up.childNodes.length === 1
           && (up.tagName === 'P' || up.tagName === 'DIV')
         ) {
           a.className = 'button'; // default
@@ -517,7 +517,7 @@ export function getBlockConfig(block) {
   const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
   const original = { blockName, cssPath, jsPath };
   return (window.hlx.patchBlockConfig || [])
-    .filter((fn) => typeof fn === "function")
+    .filter((fn) => typeof fn === 'function')
     .reduce((config, fn) => fn(config, original), {
       blockName,
       cssPath,
@@ -536,26 +536,26 @@ export async function loadModule(name, jsPath, cssPath, ...args) {
   try {
     const cssLoaded = cssPath
       ? new Promise((resolve) => {
-          loadCSS(cssPath).then(resolve).catch(resolve);
-        })
+        loadCSS(cssPath).then(resolve).catch(resolve);
+      })
       : Promise.resolve();
 
     const decorationComplete = jsPath
       ? new Promise((resolve) => {
-          (async () => {
-            let mod;
-            try {
-              mod = await import(jsPath);
-              if (mod.default) {
-                await mod.default.apply(null, args);
-              }
-            } catch (error) {
-              // eslint-disable-next-line no-console
-              console.log(`failed to load module for ${name}`, error);
+        (async () => {
+          let mod;
+          try {
+            mod = await import(jsPath);
+            if (mod.default) {
+              await mod.default.apply(null, args);
             }
-            resolve(mod);
-          })();
-        })
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`failed to load module for ${name}`, error);
+          }
+          resolve(mod);
+        })();
+      })
       : Promise.resolve();
     return Promise.all([cssLoaded, decorationComplete]).then(([, api]) => api);
   } catch (error) {
@@ -715,9 +715,9 @@ export const executionContext = {
 export function parsePluginParams(id, config) {
   const pluginId = !config
     ? id
-        .split('/')
-        .splice(id.endsWith('/') ? -2 : -1, 1)[0]
-        .replace(/\.js/, '')
+      .split('/')
+      .splice(id.endsWith('/') ? -2 : -1, 1)[0]
+      .replace(/\.js/, '')
     : id;
   const pluginConfig = {
     load: 'eager',
@@ -740,7 +740,7 @@ class PluginsRegistry {
   add(id, config) {
     const { id: pluginId, config: pluginConfig } = parsePluginParams(
       id,
-      config
+      config,
     );
     this.#plugins.set(pluginId, pluginConfig);
   }
@@ -761,8 +761,8 @@ class PluginsRegistry {
     [...this.#plugins.entries()]
       .filter(
         ([, plugin]) =>
-          plugin.condition &&
-          !plugin.condition(document, plugin.options, executionContext)
+          plugin.condition 
+          && !plugin.condition(document, plugin.options, executionContext)
       )
       .map(([id]) => this.#plugins.delete(id));
     return Promise.all(
@@ -771,9 +771,9 @@ class PluginsRegistry {
         .filter(
           ([, plugin]) =>
             (!plugin.condition ||
-              plugin.condition(document, plugin.options, executionContext)) &&
-            phase === plugin.load &&
-            plugin.url
+              plugin.condition(document, plugin.options, executionContext)) 
+              && phase === plugin.load 
+              && plugin.url
         )
         .map(async ([key, plugin]) => {
           try {
@@ -805,8 +805,8 @@ class PluginsRegistry {
         promise,
         plugin // Using reduce to execute plugins sequencially
       ) =>
-        plugin[phase] &&
-        (!plugin.condition ||
+        plugin[phase] 
+        && (!plugin.condition ||
           plugin.condition(document, plugin.options, executionContext))
           ? promise.then(() =>
               plugin[phase](document, plugin.options, executionContext)
