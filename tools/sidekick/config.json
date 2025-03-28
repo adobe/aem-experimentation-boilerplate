@@ -1,5 +1,5 @@
 {
-    "project": "AEM-Experimentation",
+    "project": "AEM-Experimentation-Boilerplate",
     "plugins": [
       {
         "id": "library",
@@ -22,9 +22,7 @@
         "titleI18n": {
           "en": "Experimentation"
         },
-        "environments": [
-          "preview"
-        ],
+        "environments": [ "preview", "live", "edit" ],
         "includePaths": [
           "**.docx**"
         ],

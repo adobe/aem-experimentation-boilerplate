@@ -11,7 +11,6 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  sampleRUM,
 } from './aem.js';
 
 const experimentationConfig = {
@@ -22,11 +21,6 @@ const experimentationConfig = {
     // define your custom audiences here as needed
   },
 };
-
-window.hlx.plugins.add('rum-conversion', {
-  url: '/plugins/rum-conversion/src/index.js',
-  load: 'lazy',
-});
 
 window.hlx.plugins.add('experimentation', { // use window.hlx instead of your project has this
   condition: () => document.head.querySelector('[name^="experiment"],[name^="campaign-"],[name^="audience-"]') // page level metadata
@@ -99,6 +93,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
@@ -136,25 +131,17 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
-
   window.hlx.plugins.run('loadLazy');
   import('../tools/sidekick/aem-experimentation.js');
 }
 
 /**
- * loads everything that happens a lot later, without impacting
- * the user experience.
+ * Loads everything that happens a lot later,
+ * without impacting the user experience.
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => {
-    window.hlx.plugins.load('delayed');
-    window.hlx.plugins.run('loadDelayed');
-    return import('./delayed.js');
-  }, 3000);
+  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
 }
 
