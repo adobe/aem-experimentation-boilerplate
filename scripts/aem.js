@@ -760,9 +760,8 @@ class PluginsRegistry {
   async load(phase) {
     [...this.#plugins.entries()]
       .filter(
-        ([, plugin]) =>
-          plugin.condition 
-          && !plugin.condition(document, plugin.options, executionContext)
+        ([, plugin]) => plugin.condition
+          && !plugin.condition(document, plugin.options, executionContext),
       )
       .map(([id]) => this.#plugins.delete(id));
     return Promise.all(
@@ -770,9 +769,8 @@ class PluginsRegistry {
         // Filter plugins that don't match the execution conditions
         .filter(
           ([, plugin]) =>
-            (!plugin.condition ||
-              plugin.condition(document, plugin.options, executionContext)) 
-              && phase === plugin.load 
+            (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
+              && phase === plugin.load
               && plugin.url
         )
         .map(async ([key, plugin]) => {
@@ -806,10 +804,8 @@ class PluginsRegistry {
         plugin // Using reduce to execute plugins sequencially
       ) =>
         plugin[phase] 
-        && (!plugin.condition ||
-          plugin.condition(document, plugin.options, executionContext))
-          ? promise.then(() =>
-              plugin[phase](document, plugin.options, executionContext)
+        && (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
+          ? promise.then(() => plugin[phase](document, plugin.options, executionContext)
             )
           : promise,
       Promise.resolve()
@@ -829,8 +825,7 @@ class TemplatesRegistry {
       id,
       url
     );
-    templateConfig.condition = () =>
-      toClassName(getMetadata("template")) === templateId;
+    templateConfig.condition = () => toClassName(getMetadata("template")) === templateId;
     window.hlx.plugins.add(templateId, templateConfig);
   }
 
@@ -866,7 +861,7 @@ function setup() {
   if (scriptEl) {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split(
-        '/scripts/scripts.js'
+        '/scripts/scripts.js',
       );
     } catch (error) {
       // eslint-disable-next-line no-console
