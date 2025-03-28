@@ -85,10 +85,10 @@ export function sampleRUM(checkpoint, data = {}) {
 function toClassName(name) {
   return typeof name === 'string'
     ? name
-        .toLowerCase()
-        .replace(/[^0-9a-z]/gi, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
+      .toLowerCase()
+      .replace(/[^0-9a-z]/gi, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
     : '';
 }
 
@@ -213,12 +213,12 @@ export function getMetadata(name, doc = document) {
  */
 export function createOptimizedPicture(
   src,
-  alt = "",
+  alt = '',
   eager = false,
   breakpoints = [
     { media: '(min-width: 600px)', width: '2000' },
     { width: '750' },
-  ]
+  ],
 ) {
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
@@ -232,7 +232,7 @@ export function createOptimizedPicture(
     source.setAttribute('type', 'image/webp');
     source.setAttribute(
       'srcset',
-      `${pathname}?width=${br.width}&format=webply&optimize=medium`
+      `${pathname}?width=${br.width}&format=webply&optimize=medium`,
     );
     picture.appendChild(source);
   });
@@ -244,7 +244,7 @@ export function createOptimizedPicture(
       if (br.media) source.setAttribute('media', br.media);
       source.setAttribute(
         'srcset',
-        `${pathname}?width=${br.width}&format=${ext}&optimize=medium`
+        `${pathname}?width=${br.width}&format=${ext}&optimize=medium`,
       );
       picture.appendChild(source);
     } else {
@@ -305,16 +305,15 @@ export function wrapTextNodes(block) {
 
   block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
     if (blockColumn.hasChildNodes()) {
-      const hasWrapper =
-        !!blockColumn.firstElementChild &&
-        validWrappers.some(
-          (tagName) => blockColumn.firstElementChild.tagName === tagName
+      const hasWrapper = !!blockColumn.firstElementChild
+        && validWrappers.some(
+          (tagName) => blockColumn.firstElementChild.tagName === tagName,
         );
       if (!hasWrapper) {
         wrap(blockColumn);
       } else if (
-        blockColumn.firstElementChild.tagName === 'PICTURE' &&
-        (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())
+        blockColumn.firstElementChild.tagName === 'PICTURE'
+        && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())
       ) {
         wrap(blockColumn);
       }
@@ -334,26 +333,26 @@ export function decorateButtons(element) {
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector('img')) {
         if (
-          up.childNodes.length === 1 &&
-          (up.tagName === 'P' || up.tagName === 'DIV')
+          up.childNodes.length === 1 
+          && (up.tagName === 'P' || up.tagName === 'DIV')
         ) {
           a.className = 'button'; // default
           up.classList.add('button-container');
         }
         if (
-          up.childNodes.length === 1 &&
-          up.tagName === 'STRONG' &&
-          twoup.childNodes.length === 1 &&
-          twoup.tagName === 'P'
+          up.childNodes.length === 1
+          && up.tagName === 'STRONG'
+          && twoup.childNodes.length === 1
+          && twoup.tagName === 'P'
         ) {
           a.className = 'button primary';
           twoup.classList.add('button-container');
         }
         if (
-          up.childNodes.length === 1 &&
-          up.tagName === 'EM' &&
-          twoup.childNodes.length === 1 &&
-          twoup.tagName === 'P'
+          up.childNodes.length === 1
+          && up.tagName === 'EM'
+          && twoup.childNodes.length === 1
+          && twoup.tagName === 'P'
         ) {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
@@ -369,9 +368,9 @@ export function decorateButtons(element) {
  * @param {string} [prefix] prefix to be added to icon src
  * @param {string} [alt] alt text to be added to icon
  */
-export function decorateIcon(span, prefix = "", alt = "") {
+export function decorateIcon(span, prefix = '', alt = '') {
   const iconName = Array.from(span.classList)
-    .find((c) => c.startsWith("icon-"))
+    .find((c) => c.startsWith('icon-'))
     .substring(5);
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
@@ -388,7 +387,7 @@ export function decorateIcon(span, prefix = "", alt = "") {
  * @param {Element} [element] Element containing icons
  * @param {string} [prefix] prefix to be added to icon the src
  */
-export function decorateIcons(element, prefix = "") {
+export function decorateIcons(element, prefix = '') {
   const icons = element.querySelectorAll('span.icon');
   icons.forEach((span) => {
     decorateIcon(span, prefix);
@@ -570,10 +569,10 @@ export async function loadModule(name, jsPath, cssPath, ...args) {
  * @param {Element} block The block element
  */
 export async function loadBlock(block) {
-  const status = block.getAttribute("data-block-status");
-  if (status !== "loading" && status !== "loaded") {
+  const status = block.getAttribute('data-block-status');
+  if (status !== 'loading' && status !== 'loaded') {
     try {
-      block.setAttribute("data-block-status", "loading");
+      block.setAttribute('data-block-status', 'loading');
       const { blockName, cssPath, jsPath } = getBlockConfig(block);
 
       try {
@@ -583,12 +582,12 @@ export async function loadBlock(block) {
         console.log(`failed to load block ${blockName}`, error);
       }
 
-      block.setAttribute("data-block-status", "loaded");
+      block.setAttribute('data-block-status', 'loaded');
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error("Error in loadBlock:", error);
-      if (block.getAttribute("data-block-status") === "loading") {
-        block.setAttribute("data-block-status", "error");
+      console.error('Error in loadBlock:', error);
+      if (block.getAttribute('data-block-status') === 'loading') {
+        block.setAttribute('data-block-status', 'error');
       }
     }
   }
@@ -602,13 +601,13 @@ export async function loadBlock(block) {
 export function decorateBlock(block) {
   const shortBlockName = block.classList[0];
   if (shortBlockName) {
-    block.classList.add("block");
+    block.classList.add('block');
     block.dataset.blockName = shortBlockName;
-    block.dataset.blockStatus = "initialized";
+    block.dataset.blockStatus = 'initialized';
     wrapTextNodes(block);
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
-    const section = block.closest(".section");
+    const section = block.closest('.section');
     if (section) section.classList.add(`${shortBlockName}-container`);
   }
 }
@@ -782,10 +781,10 @@ class PluginsRegistry {
             const pluginApi =
               (await loadModule(
                 key,
-                !plugin.url.endsWith(".js")
+                !plugin.url.endsWith('.js')
                   ? `${plugin.url}/${key}.js`
                   : plugin.url,
-                !plugin.url.endsWith(".js") ? `${plugin.url}/${key}.css` : null,
+                !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
                 document,
                 plugin.options,
                 executionContext
@@ -793,7 +792,7 @@ class PluginsRegistry {
             this.#plugins.set(key, { ...plugin, ...pluginApi });
           } catch (err) {
             // eslint-disable-next-line no-console
-            console.error("Could not load specified plugin", key);
+            console.error('Could not load specified plugin', key);
           }
         })
     );
