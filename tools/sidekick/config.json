@@ -1,0 +1,16 @@
+{
+    "project": "AEM-Experimentation-Boilerplate",
+    "plugins": [
+      {
+        "id": "aem-experimentation",
+        "titleI18n": {
+          "en": "Experimentation"
+        },
+        "environments": [ "preview", "live", "edit" ],
+        "includePaths": [
+          "**.docx**"
+        ],
+        "event": "aem-experimentation-sidekick"
+      }
+    ]
+  }

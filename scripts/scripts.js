@@ -13,6 +13,25 @@ import {
   loadCSS,
 } from './aem.js';
 
+const experimentationConfig = {
+  prodHost: 'www.my-site.com',
+  audiences: {
+    mobile: () => window.innerWidth < 600,
+    desktop: () => window.innerWidth >= 600,
+    // define your custom audiences here as needed
+  },
+};
+
+window.hlx.plugins.add('experimentation', { // use window.hlx instead of your project has this
+  condition: () => document.head.querySelector('[name^="experiment"],[name^="campaign-"],[name^="audience-"]') // page level metadata
+    // decorated section metadata
+    || document.querySelector('.section[class*=experiment],.section[class*=audience],.section[class*=campaign]')
+    // undecorated section metadata
+    || [...document.querySelectorAll('.section-metadata div')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i)),
+  options: experimentationConfig,
+  url: '/plugins/experimentation/src/index.js',
+});
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -74,6 +93,9 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  await window.hlx.plugins.run('loadEager');
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -108,6 +130,9 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  window.hlx.plugins.run('loadLazy');
+  import('../tools/sidekick/aem-experimentation.js');
 }
 
 /**
@@ -121,7 +146,9 @@ function loadDelayed() {
 }
 
 async function loadPage() {
+  await window.hlx.plugins.load('eager');
   await loadEager(document);
+  await window.hlx.plugins.load('lazy');
   await loadLazy(document);
   loadDelayed();
 }
