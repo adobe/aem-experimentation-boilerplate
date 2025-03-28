@@ -768,40 +768,34 @@ class PluginsRegistry {
         (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
         && phase === plugin.load && plugin.url
       ))
-        .map(async ([key, plugin]) => {
-          try {
-            // If the plugin has a default export, it will be executed immediately
-            const pluginApi = (await loadModule(
-              key,
-              !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
-              !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
-              document,
-              plugin.options,
-              executionContext,
-            )) || {};
-            this.#plugins.set(key, { ...plugin, ...pluginApi });
-          } catch (err) {
-            // eslint-disable-next-line no-console
-            console.error('Could not load specified plugin', key);
-          }
-        })
+      .map(async ([key, plugin]) => {
+        try {
+          // If the plugin has a default export, it will be executed immediately
+          const pluginApi = (await loadModule(
+            key,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+            document,
+            plugin.options,
+            executionContext,
+          )) || {};
+          this.#plugins.set(key, { ...plugin, ...pluginApi });
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Could not load specified plugin', key);
+        }
+      }),
     );
   }
-
   // Run a specific phase in the plugin
   async run(phase) {
-    return [...this.#plugins.values()].reduce(
-      (
-        promise,
-        plugin // Using reduce to execute plugins sequencially
-      ) =>
-        plugin[phase] 
-        && (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
-          ? promise.then(() => plugin[phase](document, plugin.options, executionContext)
-            )
-          : promise,
-      Promise.resolve()
-    );
+    return [...this.#plugins.values()]
+      .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
+        plugin[phase] && (!plugin.condition
+            || plugin.condition(document, plugin.options, executionContext))
+          ? promise.then(() => plugin[phase](document, plugin.options, executionContext))
+          : promise
+      ), Promise.resolve());
   }
 }
 
