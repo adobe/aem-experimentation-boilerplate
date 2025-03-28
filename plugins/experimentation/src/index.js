@@ -988,6 +988,7 @@ export async function loadLazy(document, options = {}) {
           source: 'index-js',
         }, '*');
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error('Error sending hlx config:', e);
       }
     }

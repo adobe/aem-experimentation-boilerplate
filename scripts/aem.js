@@ -559,6 +559,7 @@ export async function loadModule(name, jsPath, cssPath, ...args) {
       : Promise.resolve();
     return Promise.all([cssLoaded, decorationComplete]).then(([, api]) => api);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`Error in loadModule for ${name}:`, error);
     return null;
   }
@@ -786,7 +787,7 @@ class PluginsRegistry {
         }
       }));
   }
- 
+
   // Run a specific phase in the plugin
   async run(phase) {
     return [...this.#plugins.values()]
