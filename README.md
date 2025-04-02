@@ -1,9 +1,9 @@
 # AEM Experimentation Boilerplate
 
-This is a boilerplate for AEM experimentation. It builds upon the [AEM Boilerplate](https://github.com/adobe/aem-boilerplate) with these enhancements:
+This is a boilerplate for AEM experimentation. It builds upon the [AEM Boilerplate](https://github.com/adobe/aem-boilerplate) with these Configurations:
 
 - Integration of the updated Experimentation Engine (V2) - see https://github.com/adobe/aem-experimentation/pull/28
-- Sidekick configuration with the latest experimentation UI rail (Click the experimentation button on sidekick to see it.)
+- Sidekick configuration with the latest experimentation UI rail
 
 ## Environments
 
