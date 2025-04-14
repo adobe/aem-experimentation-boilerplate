@@ -38,7 +38,7 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
     "http-server": "14.1.1",
-    "monocart-coverage-reports": "2.12.3",
+    "monocart-coverage-reports": "2.12.4",
     "semantic-release": "24.2.3",
     "stylelint": "15.11.0",
     "stylelint-config-standard": "34.0.0"
