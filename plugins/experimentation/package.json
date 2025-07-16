@@ -41,7 +41,7 @@
     "monocart-coverage-reports": "2.12.6",
     "semantic-release": "24.2.7",
     "stylelint": "15.11.0",
-    "stylelint-config-standard": "34.0.0"
+    "stylelint-config-standard": "38.0.0"
   },
   "private": true
 }
