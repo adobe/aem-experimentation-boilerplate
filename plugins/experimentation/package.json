@@ -30,7 +30,7 @@
   "homepage": "https://github.com/adobe/aem-experimentation#readme",
   "devDependencies": {
     "@babel/eslint-parser": "7.28.4",
-    "@playwright/test": "1.56.0",
+    "@playwright/test": "1.56.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@semantic-release/npm": "13.0.0",
