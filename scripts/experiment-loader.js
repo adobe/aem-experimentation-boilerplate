@@ -13,9 +13,18 @@ const isExperimentationEnabled = () => document.head.querySelector('[name^="expe
  */
 export async function runExperimentation(document, config) {
   if (!isExperimentationEnabled()) {
+    window.addEventListener('message', async (event) => {
+      if (event.data?.type === 'hlx:experimentation-get-config') {
+        event.source.postMessage({
+          type: 'hlx:experimentation-config',
+          config: { experiments: [], audiences: [], campaigns: [] },
+          source: 'no-experiments'
+        }, '*');
+      }
+    });
     return null;
   }
-
+ 
   try {
     const { loadEager } = await import(
       '../plugins/experimentation/src/index.js'
