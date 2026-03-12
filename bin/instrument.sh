@@ -27,7 +27,7 @@ fi
 
 # Ensure we're in a GitHub repository
 REMOTE="$(git -C "$GIT_ROOT" remote get-url origin 2>/dev/null)" || true
-if [[ -z "$REMOTE" ]] || [[ "$REMOTE" != *github.com* ]]; then
+if [[ -z "$REMOTE" ]] || [[ "$REMOTE" != *github* ]]; then
   echo "Error: This is not a GitHub repository (no origin or origin is not GitHub)." >&2
   exit 1
 fi
